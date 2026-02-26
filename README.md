@@ -270,5 +270,3 @@ Dynamo is digital iron. Heavy. Cold. Unforgiving. Exactly what it needs to be.
 *Lift heavy. Move well. Stay hard.*
 
 — lejafmofokeng
- 
- 
