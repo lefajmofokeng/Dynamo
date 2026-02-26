@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>DYNAMO — Premium Training Facility</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --dyn-black: #080808;
+  --dyn-dark: #0f0f0f;
+  --dyn-card: #141414;
+  --dyn-border: #242424;
+  --dyn-mid: #2a2a2a;
+  --dyn-grey: #888;
+  --dyn-silver: #bbb;
+  --dyn-light: #ddd;
+  --dyn-white: #f0f0f0;
+  --dyn-pure: #ffffff;
+  --dyn-radius: 1px;
+  --dyn-fd: 'Bebas Neue', sans-serif;
+  --dyn-fc: 'Barlow Condensed', sans-serif;
+  --dyn-fb: 'Barlow', sans-serif;
+  --dyn-t: 0.4s cubic-bezier(0.16,1,0.3,1);
+}
+
+html { scroll-behavior: smooth; overflow-x: hidden; }
+body.dyn-body {
+  background: var(--dyn-black);
+  color: var(--dyn-white);
+  font-family: var(--dyn-fb);
+  font-weight: 400;
+  line-height: 1.6;
+  overflow-x: hidden;
+  width: 100%;
+}
+img { display: block; max-width: 100%; }
+
+/* ── NAV ─────────────────────────────────────────────── */
+.dyn-nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 1000;
+  padding: 22px 48px;
+  display: flex; align-items: center; justify-content: space-between;
+  transition: background var(--dyn-t), padding var(--dyn-t), border-color 0.3s;
+  border-bottom: 1px solid transparent;
+  width: 100%;
+}
+.dyn-nav.dyn-scrolled {
+  background: rgba(8,8,8,0.97);
+  backdrop-filter: blur(20px);
+  padding: 14px 48px;
+  border-bottom-color: var(--dyn-border);
+}
+.dyn-nav__logo {
+  font-family: var(--dyn-fd); font-size: 26px; color: var(--dyn-pure);
+  letter-spacing: 5px; text-decoration: none; flex-shrink: 0; z-index: 1;
+}
+.dyn-nav__links { display: flex; gap: 36px; list-style: none; }
+.dyn-nav__links a {
+  font-family: var(--dyn-fc); font-size: 12px; letter-spacing: 2.5px; font-weight: 700;
+  text-transform: uppercase; color: var(--dyn-silver); text-decoration: none;
+  transition: color 0.2s;
+}
+.dyn-nav__links a:hover { color: var(--dyn-pure); }
+.dyn-nav__cta {
+  font-family: var(--dyn-fc); font-size: 12px; letter-spacing: 2px;
+  text-transform: uppercase; background: var(--dyn-pure); color: var(--dyn-black);
+  border: none; padding: 10px 26px; border-radius: var(--dyn-radius);
+  cursor: pointer; font-weight: 700; text-decoration: none;
+  transition: opacity 0.2s; white-space: nowrap;
+}
+.dyn-nav__cta:hover { opacity: 0.82; }
+.dyn-hamburger {
+  display: none; flex-direction: column; justify-content: center; gap: 6px;
+  cursor: pointer; background: none; border: none; padding: 4px; z-index: 1060; flex-shrink: 0;
+}
+.dyn-hamburger span { display: block; width: 22px; height: 1.5px; background: var(--dyn-pure); transition: all 0.3s; border-radius: 2px; }
+.dyn-hamburger.dyn-open span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+.dyn-hamburger.dyn-open span:nth-child(2) { opacity: 0; }
+.dyn-hamburger.dyn-open span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+
+/* Mobile menu */
+.dyn-mobile-menu {
+  position: fixed; inset: 0; background: var(--dyn-black); z-index: 1050;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 32px; opacity: 0; pointer-events: none; transition: opacity 0.3s;
+}
+.dyn-mobile-menu.dyn-open { opacity: 1; pointer-events: all; }
+.dyn-mobile-menu a {
+  font-family: var(--dyn-fd); font-size: 44px; letter-spacing: 5px;
+  color: var(--dyn-white); text-decoration: none; transition: color 0.2s;
+}
+.dyn-mobile-menu a:hover { color: var(--dyn-silver); }
+.dyn-mm-cta {
+  margin-top: 10px; font-family: var(--dyn-fc); letter-spacing: 3px;
+  text-transform: uppercase; background: var(--dyn-pure); color: var(--dyn-black) !important;
+  padding: 14px 40px; border-radius: var(--dyn-radius); font-weight: 700;
+  font-size: 13px !important;
+}
+/* Mobile menu close button */
+.dyn-mm-close {
+  position: absolute; top: 20px; right: 20px;
+  background: var(--dyn-mid); border: 1px solid var(--dyn-border);
+  border-radius: var(--dyn-radius); color: var(--dyn-silver);
+  width: 42px; height: 42px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; line-height: 1; transition: color 0.2s, border-color 0.2s;
+  z-index: 10;
+}
+.dyn-mm-close:hover { color: var(--dyn-pure); border-color: var(--dyn-silver); }
+
+/* ── HERO ─────────────────────────────────────────────── */
+.dyn-hero {
+  position: relative; height: 100vh; min-height: 600px;
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
+}
+.dyn-hero__bg {
+  position: absolute; inset: 0;
+ 
+}
+.dyn-hero__bg::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(8,8,8,0.5) 0%, rgba(8,8,8,0.72) 100%);
+}
+.dyn-hero__video { position: absolute; inset: 0; z-index: 1; }
+.dyn-hero__video video { width: 100%; height: 100%; object-fit: cover; opacity: 0.4; }
+.dyn-hero__content { position: relative; z-index: 2; text-align: center; padding: 0 20px; }
+.dyn-hero__eyebrow {
+  font-family: var(--dyn-fc); font-size: 12px; letter-spacing: 5px;
+  text-transform: uppercase; color: rgba(255,255,255,0.65); margin-bottom: 18px;
+  opacity: 0; animation: dynFadeUp 1s 0.3s forwards;
+}
+.dyn-hero__title {
+  font-family: var(--dyn-fd); font-size: clamp(80px,16vw,210px);
+  line-height: 0.88; color: var(--dyn-pure); letter-spacing: 10px;
+  opacity: 0; animation: dynFadeUp 1s 0.5s forwards;
+}
+.dyn-hero__sub {
+  font-size: 15px; letter-spacing: 3px; color: rgba(255,255,255,0.6);
+  margin: 20px 0 46px; font-weight: 600; text-transform: uppercase;
+  opacity: 0; animation: dynFadeUp 1s 0.7s forwards;
+}
+.dyn-hero__btn {
+  display: inline-block; font-family: var(--dyn-fc); font-size: 13px;
+  letter-spacing: 3px; text-transform: uppercase; font-weight: 700;
+  color: var(--dyn-black); background: var(--dyn-pure); border: none;
+  padding: 18px 56px; border-radius: var(--dyn-radius); cursor: pointer;
+  text-decoration: none; opacity: 0; animation: dynFadeUp 1s 0.9s forwards;
+  transition: transform var(--dyn-t), opacity 0.2s;
+}
+.dyn-hero__btn:hover { transform: translateY(-3px); opacity: 0.85; }
+.dyn-scroll-ind {
+  position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+  z-index: 2; display: flex; flex-direction: column; align-items: center;
+  gap: 8px; opacity: 0; animation: dynFadeIn 1s 1.5s forwards;
+}
+.dyn-scroll-ind span {
+  font-family: var(--dyn-fc); font-size: 10px; letter-spacing: 3px;
+  text-transform: uppercase; color: rgba(255,255,255,0.35);
+}
+.dyn-scroll-line {
+  width: 1px; height: 36px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.45), transparent);
+  animation: dynScrollPulse 2s infinite;
+}
+
+/* ── LIVE BAR ─────────────────────────────────────────── */
+.dyn-live-bar {
+  background: var(--dyn-dark); border-top: 1px solid var(--dyn-border);
+  border-bottom: 1px solid var(--dyn-border); padding: 16px 48px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 14px; width: 100%;
+}
+.dyn-live-bar__item { display: flex; align-items: center; gap: 10px; }
+.dyn-live-dot { width: 8px; height: 8px; border-radius: 50%; background: #4ade80; animation: dynPulse 2s infinite; flex-shrink: 0; }
+.dyn-live-bar__label { font-family: var(--dyn-fc); font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--dyn-silver); }
+.dyn-live-bar__count { font-family: var(--dyn-fd); font-size: 32px; color: var(--dyn-pure); letter-spacing: 2px; line-height: 1; }
+.dyn-live-bar__cap { font-family: var(--dyn-fc); font-size: 12px; color: var(--dyn-grey); letter-spacing: 1px; }
+.dyn-cap-bar { width: 160px; height: 2px; background: var(--dyn-mid); border-radius: 1px; overflow: hidden; }
+.dyn-cap-fill { height: 100%; background: linear-gradient(to right,#4ade80,#86efac); transition: width 1s ease, background 1s; border-radius: 1px; }
+.dyn-live-bar__hours { font-family: var(--dyn-fc); font-size: 12px; letter-spacing: 2px; color: var(--dyn-silver); text-transform: uppercase; }
+
+/* ── TICKER ───────────────────────────────────────────── */
+.dyn-ticker { overflow: hidden; border-bottom: 1px solid var(--dyn-border); padding: 12px 0; background: var(--dyn-black); width: 100%; }
+.dyn-ticker__inner { display: flex; white-space: nowrap; animation: dynTicker 28s linear infinite; width: max-content; }
+.dyn-ticker__item { display: inline-flex; align-items: center; gap: 18px; padding: 0 36px; flex-shrink: 0; }
+.dyn-ticker__text { font-family: var(--dyn-fc); font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--dyn-grey); }
+.dyn-ticker__sep { width: 4px; height: 4px; border-radius: 50%; background: var(--dyn-border); flex-shrink: 0; }
+
+/* ── SPLIT SECTION ────────────────────────────────────── */
+.dyn-split {
+  padding: 130px 48px; display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: center; max-width: 1400px; margin: 0 auto; width: 100%;
+}
+.dyn-split__tag {
+  font-family: var(--dyn-fc); font-size: 11px; letter-spacing: 4px;
+  text-transform: uppercase; color: var(--dyn-grey); display: flex;
+  align-items: center; gap: 12px; margin-bottom: 28px;
+}
+.dyn-split__tag::before { content: ''; display: block; width: 28px; height: 1px; background: var(--dyn-grey); flex-shrink: 0; }
+.dyn-split__heading { font-family: var(--dyn-fd); font-size: clamp(52px,5vw,84px); line-height: 0.93; color: var(--dyn-pure); letter-spacing: 3px; margin-bottom: 24px; }
+.dyn-split__desc { font-size: 15px; color: var(--dyn-light); line-height: 1.85; max-width: 420px; margin-bottom: 44px; }
+.dyn-split__btn {
+  display: inline-flex; align-items: center; gap: 12px;
+  font-family: var(--dyn-fc); font-size: 12px; letter-spacing: 3px;
+  text-transform: uppercase; font-weight: 600; color: var(--dyn-pure);
+  text-decoration: none; border-bottom: 1px solid var(--dyn-grey);
+  padding-bottom: 6px; transition: border-color 0.2s, gap 0.2s;
+}
+.dyn-split__btn:hover { border-color: var(--dyn-pure); gap: 18px; }
+.dyn-split__images { position: relative; height: 520px; }
+.dyn-split__deco {
+  position: absolute; font-family: var(--dyn-fd); font-size: 280px;
+  color: rgba(255,255,255,0.018); top: -40px; right: -20px;
+  z-index: 0; pointer-events: none; line-height: 1; user-select: none;
+}
+.dyn-split__ph { position: absolute; overflow: hidden; border-radius: var(--dyn-radius); }
+.dyn-split__ph img { width: 100%; height: 100%; object-fit: cover; }
+.dyn-split__ph:nth-child(2) { width: 64%; height: 78%; top: 0; right: 0; z-index: 3; box-shadow: -16px 20px 60px rgba(0,0,0,0.8); }
+.dyn-split__ph:nth-child(3) { width: 50%; height: 60%; top: 22%; left: 0; z-index: 2; box-shadow: 16px 20px 60px rgba(0,0,0,0.7); filter: brightness(0.8); }
+.dyn-split__ph:nth-child(4) { width: 40%; height: 44%; bottom: 0; right: 8%; z-index: 1; filter: brightness(0.6); }
+
+/* ── FEATURES ─────────────────────────────────────────── */
+.dyn-features { padding: 80px 48px; border-top: 1px solid var(--dyn-border); border-bottom: 1px solid var(--dyn-border); width: 100%; }
+.dyn-features__grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: var(--dyn-border); max-width: 1400px; margin: 0 auto; }
+.dyn-feat { background: var(--dyn-black); padding: 44px 36px; transition: background var(--dyn-t); }
+.dyn-feat:hover { background: var(--dyn-dark); }
+.dyn-feat__icon { width: 34px; height: 34px; margin-bottom: 22px; color: var(--dyn-silver); flex-shrink: 0; }
+.dyn-feat__title { font-family: var(--dyn-fc); font-size: 17px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--dyn-pure); margin-bottom: 10px; }
+.dyn-feat__desc { font-size: 13px; color: var(--dyn-silver); line-height: 1.7; }
+
+/* ── GALLERY ──────────────────────────────────────────── */
+.dyn-gallery { padding: 130px 48px; max-width: 1400px; margin: 0 auto; width: 100%; }
+.dyn-gallery__header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 72px; gap: 24px; flex-wrap: wrap; }
+.dyn-gallery__title { font-family: var(--dyn-fd); font-size: clamp(52px,7vw,100px); letter-spacing: 5px; line-height: 0.9; color: var(--dyn-pure); }
+.dyn-gallery__sub { font-size: 14px; color: var(--dyn-silver); max-width: 260px; line-height: 1.75; }
+.dyn-gallery__mosaic { display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 320px 280px; gap: 5px; width: 100%; }
+.dyn-gtile { position: relative; overflow: hidden; border-radius: var(--dyn-radius); cursor: pointer; background: var(--dyn-card); }
+.dyn-gtile:nth-child(1) { grid-row: span 2; }
+.dyn-gtile:nth-child(4) { grid-column: span 2; }
+.dyn-gtile img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s cubic-bezier(0.16,1,0.3,1); }
+.dyn-gtile:hover img { transform: scale(1.05); }
+.dyn-gtile__ov {
+  position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%);
+  opacity: 0; transition: opacity 0.4s; display: flex; align-items: flex-end; padding: 24px;
+}
+.dyn-gtile:hover .dyn-gtile__ov { opacity: 1; }
+.dyn-gtile__ov-text { font-family: var(--dyn-fc); font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--dyn-pure); }
+.dyn-gallery__scroll-wrap { margin-top: 5px; overflow: hidden; width: 100%; }
+.dyn-gallery__scroll-track { display: flex; gap: 5px; animation: dynSlideCards 30s linear infinite; width: max-content; }
+.dyn-gallery__scroll-track:hover { animation-play-state: paused; }
+.dyn-gallery__scroll-card { flex-shrink: 0; width: 260px; height: 170px; border-radius: var(--dyn-radius); overflow: hidden; position: relative; background: var(--dyn-card); }
+.dyn-gallery__scroll-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+.dyn-gallery__scroll-card:hover img { transform: scale(1.06); }
+.dyn-sc-label { position: absolute; bottom: 14px; left: 16px; font-family: var(--dyn-fc); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.65); }
+
+/* ── PROGRAMS ─────────────────────────────────────────── */
+.dyn-programs { padding: 130px 48px; border-top: 1px solid var(--dyn-border); width: 100%; }
+.dyn-programs__inner { max-width: 1400px; margin: 0 auto; }
+.dyn-programs__hr { display: flex; align-items: center; gap: 36px; margin-bottom: 72px; flex-wrap: wrap; }
+.dyn-programs__num { font-family: var(--dyn-fd); font-size: 110px; color: var(--dyn-border); line-height: 1; flex-shrink: 0; }
+.dyn-programs__heading { font-family: var(--dyn-fd); font-size: clamp(40px,5vw,72px); letter-spacing: 4px; color: var(--dyn-pure); line-height: 1; }
+.dyn-programs__grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--dyn-border); }
+.dyn-prog-card { background: var(--dyn-black); padding: 44px 36px; position: relative; overflow: hidden; transition: background var(--dyn-t); }
+.dyn-prog-card::before { content: attr(data-num); position: absolute; top: 10px; right: 16px; font-family: var(--dyn-fd); font-size: 96px; color: rgba(255,255,255,0.03); pointer-events: none; line-height: 1; }
+.dyn-prog-card__tag { font-family: var(--dyn-fc); font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--dyn-grey); margin-bottom: 16px; }
+.dyn-prog-card__name { font-family: var(--dyn-fd); font-size: 34px; letter-spacing: 3px; color: var(--dyn-pure); margin-bottom: 14px; }
+.dyn-prog-card__desc { font-size: 15px; color: var(--dyn-silver); line-height: 1.75; margin-bottom: 28px; }
+.dyn-prog-card__dur { font-family: var(--dyn-fc); font-size: 13px; letter-spacing: 2px; color: var(--dyn-light); text-transform: uppercase; }
+
+/* ── TRAINERS ─────────────────────────────────────────── */
+.dyn-trainers { padding: 130px 48px; background: var(--dyn-dark); border-top: 1px solid var(--dyn-border); width: 100%; }
+.dyn-trainers__inner { max-width: 1400px; margin: 0 auto; }
+.dyn-trainers__title { font-family: var(--dyn-fd); font-size: clamp(48px,6vw,96px); line-height: 1; letter-spacing: 4px; color: var(--dyn-pure); margin-bottom: 72px; }
+.dyn-trainers__grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+.dyn-trainer-card { border-radius: var(--dyn-radius); overflow: hidden; position: relative; background: var(--dyn-card); }
+.dyn-trainer-card__photo { height: 420px; position: relative; overflow: hidden; }
+.dyn-trainer-card__photo img { width: 100%; height: 100%; object-fit: cover; object-position: center; transition: transform 0.6s; }
+.dyn-trainer-card:hover .dyn-trainer-card__photo img { transform: scale(1.04); }
+/* Fade-from-bottom overlay */
+.dyn-trainer-card__photo::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0;
+  height: 70%;
+  background: linear-gradient(to top, var(--dyn-card) 0%, rgba(20,20,20,0.6) 50%, transparent 100%);
+  pointer-events: none;
+}
+.dyn-trainer-card__info { padding: 0 28px 32px; position: relative; z-index: 1; margin-top: -50px; }
+.dyn-trainer-card__name { font-family: var(--dyn-fd); font-size: 32px; letter-spacing: 2px; color: var(--dyn-pure); }
+.dyn-trainer-card__role { font-family: var(--dyn-fc); font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--dyn-silver); margin-top: 5px; }
+.dyn-trainer-card__spec { margin-top: 14px; display: flex; gap: 7px; flex-wrap: wrap; }
+.dyn-spec-tag { font-family: var(--dyn-fc); font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--dyn-silver); border: 1px solid var(--dyn-border); padding: 4px 10px; border-radius: var(--dyn-radius); }
+
+/* ── PRICING ──────────────────────────────────────────── */
+.dyn-pricing { padding: 130px 48px; max-width: 1400px; margin: 0 auto; width: 100%; }
+.dyn-sec-label { font-family: var(--dyn-fc); font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--dyn-grey); display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.dyn-sec-label::before { content: ''; display: block; width: 22px; height: 1px; background: var(--dyn-grey); flex-shrink: 0; }
+.dyn-pricing h2 { font-family: var(--dyn-fd); font-size: clamp(48px,6vw,96px); letter-spacing: 4px; color: var(--dyn-pure); margin-bottom: 72px; line-height: 0.95; }
+.dyn-plans-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--dyn-border); }
+.dyn-plan { background: var(--dyn-black); padding: 56px 44px; transition: background var(--dyn-t); }
+.dyn-plan--feat { background: var(--dyn-pure); color: var(--dyn-black); }
+.dyn-plan:hover:not(.dyn-plan--feat) { background: var(--dyn-dark); }
+.dyn-plan__tier { font-family: var(--dyn-fc); font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--dyn-grey); margin-bottom: 22px; }
+.dyn-plan--feat .dyn-plan__tier { color: rgba(0,0,0,0.45); }
+.dyn-plan__price { font-family: var(--dyn-fd); font-size: 72px; color: var(--dyn-pure); letter-spacing: 2px; line-height: 1; }
+.dyn-plan--feat .dyn-plan__price { color: var(--dyn-black); }
+.dyn-plan__period { font-family: var(--dyn-fc); font-size: 12px; color: var(--dyn-grey); letter-spacing: 2px; margin-bottom: 36px; }
+.dyn-plan--feat .dyn-plan__period { color: rgba(0,0,0,0.45); }
+.dyn-plan-feats { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 44px; }
+.dyn-plan-feats li { font-size: 13px; color: var(--dyn-silver); display: flex; align-items: center; gap: 10px; }
+.dyn-plan--feat .dyn-plan-feats li { color: rgba(0,0,0,0.65); }
+.dyn-plan-feats li svg { flex-shrink: 0; }
+.dyn-plan-btn {
+  display: block; width: 100%; padding: 15px; font-family: var(--dyn-fc); font-size: 12px;
+  letter-spacing: 3px; text-transform: uppercase; font-weight: 700;
+  border-radius: var(--dyn-radius); cursor: pointer; text-align: center;
+  text-decoration: none; transition: opacity 0.2s; border: 1px solid var(--dyn-border);
+  background: transparent; color: var(--dyn-pure);
+}
+.dyn-plan--feat .dyn-plan-btn { background: var(--dyn-black); color: var(--dyn-pure); border-color: var(--dyn-black); }
+.dyn-plan-btn:hover { opacity: 0.72; }
+
+/* ── STATS ────────────────────────────────────────────── */
+.dyn-stats { padding: 90px 48px; border-top: 1px solid var(--dyn-border); border-bottom: 1px solid var(--dyn-border); width: 100%; }
+.dyn-stats__grid { display: grid; grid-template-columns: repeat(4,1fr); max-width: 1400px; margin: 0 auto; gap: 1px; background: var(--dyn-border); }
+.dyn-stat { background: var(--dyn-black); padding: 44px 36px; }
+.dyn-stat__num { font-family: var(--dyn-fd); font-size: 72px; color: var(--dyn-pure); letter-spacing: 2px; line-height: 1; }
+.dyn-stat__label { font-family: var(--dyn-fc); font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--dyn-silver); margin-top: 8px; }
+
+/* ── TESTIMONIALS ─────────────────────────────────────── */
+.dyn-testimonials { padding: 130px 48px; background: var(--dyn-dark); border-top: 1px solid var(--dyn-border); width: 100%; }
+.dyn-testimonials__inner { max-width: 1100px; margin: 0 auto; }
+.dyn-testimonials__title { font-family: var(--dyn-fd); line-height: 1; font-size: clamp(40px,5vw,72px); letter-spacing: 4px; color: var(--dyn-pure); margin-bottom: 72px; }
+.dyn-t-slider { position: relative; overflow: hidden; }
+.dyn-t-slide { display: none; grid-template-columns: 280px 1fr; gap: 60px; align-items: center; }
+.dyn-t-slide.dyn-active { display: grid; }
+.dyn-t-slide__photo { width: 280px; height: 340px; border-radius: var(--dyn-radius); overflow: hidden; flex-shrink: 0; }
+.dyn-t-slide__photo img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.dyn-t-qmark { font-family: var(--dyn-fd); font-size: 80px; color: var(--dyn-border); line-height: 0.8; margin-bottom: 8px; display: block; }
+.dyn-t-text { font-size: 29px; color: var(--dyn-light); line-height: 1.85; font-weight: 400; margin-bottom: 32px; }
+.dyn-t-stars { color: var(--dyn-silver); font-size: 14px; margin-bottom: 16px; letter-spacing: 3px; }
+.dyn-t-author { font-family: var(--dyn-fc); font-size: 15px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--dyn-pure); }
+.dyn-t-role { font-family: var(--dyn-fc); font-size: 13px; letter-spacing: 2px; color: var(--dyn-grey); margin-top: 5px; }
+.dyn-t-nav { display: flex; align-items: center; gap: 14px; margin-top: 48px; }
+.dyn-t-btn {
+  width: 44px; height: 44px; border: 1px solid var(--dyn-border); border-radius: var(--dyn-radius);
+  background: transparent; color: var(--dyn-silver); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color 0.2s, color 0.2s; flex-shrink: 0;
+}
+.dyn-t-btn:hover { border-color: var(--dyn-silver); color: var(--dyn-pure); }
+.dyn-t-dots { display: flex; gap: 8px; }
+.dyn-t-dot { width: 20px; height: 2px; background: var(--dyn-border); border-radius: 1px; cursor: pointer; transition: background 0.2s, width 0.2s; }
+.dyn-t-dot.dyn-active { width: 40px; background: var(--dyn-pure); }
+.dyn-t-count { margin-left: auto; font-family: var(--dyn-fc); font-size: 11px; letter-spacing: 3px; color: var(--dyn-grey); }
+
+/* ── CTA BANNER ───────────────────────────────────────── */
+.dyn-cta { padding: 120px 48px; text-align: center; position: relative; overflow: hidden; width: 100%; }
+.dyn-cta::before {
+  content: 'DYNAMO'; position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%,-50%); font-family: var(--dyn-fd);
+  font-size: clamp(80px,16vw,220px); color: rgba(255,255,255,0.018);
+  letter-spacing: 20px; white-space: nowrap; pointer-events: none;
+}
+.dyn-cta__eyebrow { font-family: var(--dyn-fc); font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--dyn-grey); margin-bottom: 20px; }
+.dyn-cta__title { font-family: var(--dyn-fd); font-size: clamp(52px,8vw,120px); color: var(--dyn-pure); letter-spacing: 6px; line-height: 0.93; margin-bottom: 48px; }
+.dyn-cta__btn {
+  display: inline-block; font-family: var(--dyn-fc); font-size: 13px;
+  letter-spacing: 3px; text-transform: uppercase; font-weight: 700;
+  color: var(--dyn-black); background: var(--dyn-pure); padding: 18px 60px;
+  border-radius: var(--dyn-radius); text-decoration: none; cursor: pointer;
+  border: none; transition: opacity 0.2s, transform 0.3s;
+}
+.dyn-cta__btn:hover { opacity: 0.85; transform: translateY(-2px); }
+
+/* ── FOOTER ───────────────────────────────────────────── */
+.dyn-footer { background: var(--dyn-dark); border-top: 1px solid var(--dyn-border); border-radius: 30px 30px 0 0; overflow: hidden; width: 100%; }
+.dyn-footer__main { padding: 80px 48px 56px; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; border-bottom: 1px solid var(--dyn-border); }
+.dyn-footer__brand-name { font-family: var(--dyn-fd); font-size: 48px; letter-spacing: 7px; color: var(--dyn-pure); margin-bottom: 18px; }
+.dyn-footer__brand-desc { font-size: 13px; color: var(--dyn-silver); line-height: 1.85; max-width: 280px; margin-bottom: 28px; }
+.dyn-footer__socials { display: flex; gap: 10px; }
+.dyn-social-link { width: 36px; height: 36px; border: 1px solid var(--dyn-border); border-radius: var(--dyn-radius); display: flex; align-items: center; justify-content: center; color: var(--dyn-silver); text-decoration: none; transition: border-color 0.2s, color 0.2s; }
+.dyn-social-link:hover { border-color: var(--dyn-silver); color: var(--dyn-pure); }
+.dyn-social-link svg { width: 15px; height: 15px; }
+.dyn-footer__col-title { font-family: var(--dyn-fc); font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--dyn-pure); margin-bottom: 22px; }
+.dyn-footer__col-links { list-style: none; display: flex; flex-direction: column; gap: 11px; }
+.dyn-footer__col-links a { font-size: 13px; color: var(--dyn-silver); text-decoration: none; transition: color 0.2s; }
+.dyn-footer__col-links a:hover { color: var(--dyn-pure); }
+.dyn-footer__hours { display: flex; flex-direction: column; gap: 9px; }
+.dyn-footer__hour-row { display: flex; justify-content: space-between; gap: 16px; font-size: 12px; color: var(--dyn-silver); }
+.dyn-footer__hour-row span:last-child { color: var(--dyn-light); }
+.dyn-footer__bottom { padding: 18px 48px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--dyn-border); flex-wrap: wrap; gap: 8px; }
+.dyn-footer__copy { font-family: var(--dyn-fc); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--dyn-grey); }
+.dyn-footer__marquee { overflow: hidden; padding: 18px 0; background: var(--dyn-dark); width: 100%; }
+.dyn-footer__marquee-inner { display: flex; white-space: nowrap; animation: dynMarquee 14s linear infinite; width: max-content; }
+.dyn-footer__marquee-text { font-family: var(--dyn-fd); font-size: clamp(80px,12vw,150px); color: rgba(255,255,255,0.05); letter-spacing: 18px; padding-right: 60px; text-transform: uppercase; user-select: none; line-height: 1; transition: color 0.3s; }
+.dyn-footer__marquee-inner:hover { animation-play-state: paused; }
+.dyn-footer__marquee-inner:hover .dyn-footer__marquee-text { color: rgba(255,255,255,0.09); }
+
+/* ── SIGN-UP FULL PAGE ────────────────────────────────── */
+.dyn-signup-page {
+  position: fixed; inset: 0; z-index: 2000; display: none;
+  overflow: hidden; background: var(--dyn-black);
+}
+.dyn-signup-page.dyn-active { display: flex; }
+.dyn-signup-page__inner {
+  width: 100%; height: 100vh;
+  display: grid; grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+}
+.dyn-signup-page__left {
+  background: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=900&q=80') center/cover no-repeat;
+  position: relative; height: 100vh; overflow: hidden;
+}
+.dyn-signup-page__left::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to right, rgba(8,8,8,0.1) 0%, rgba(8,8,8,0.55) 100%);
+}
+.dyn-signup-page__left-content {
+  position: relative; z-index: 1; padding: 48px;
+  display: flex; flex-direction: column; justify-content: flex-end; height: 100%;
+}
+.dyn-signup-page__logo {
+  font-family: var(--dyn-fd); font-size: 26px; letter-spacing: 6px;
+  color: var(--dyn-pure); margin-bottom: auto;
+}
+.dyn-signup-page__tagline {
+  font-family: var(--dyn-fd); font-size: clamp(32px,3.5vw,58px);
+  letter-spacing: 3px; color: var(--dyn-pure); line-height: 1; margin-bottom: 12px;
+}
+.dyn-signup-page__sub { font-size: 13px; color: rgba(255,255,255,0.55); letter-spacing: 1px; }
+
+/* Right panel — no overflow, fits in viewport */
+.dyn-signup-page__right {
+  background: var(--dyn-dark);
+  height: 100vh; overflow: hidden;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 0 52px;
+}
+
+/* Close button */
+.dyn-signup-close {
+  position: fixed; top: 20px; right: 22px;
+  background: var(--dyn-mid); border: 1px solid var(--dyn-border);
+  border-radius: var(--dyn-radius); color: var(--dyn-silver);
+  font-size: 18px; width: 40px; height: 40px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: color 0.2s, border-color 0.2s; z-index: 2010; line-height: 1;
+}
+.dyn-signup-close:hover { color: var(--dyn-pure); border-color: var(--dyn-silver); }
+
+.dyn-signup-eyebrow {
+  font-family: var(--dyn-fc); font-size: 11px; letter-spacing: 4px;
+  text-transform: uppercase; color: var(--dyn-grey); margin-bottom: 6px;
+}
+.dyn-signup-title {
+  font-family: var(--dyn-fd); font-size: clamp(36px,3.5vw,56px);
+  letter-spacing: 4px; color: var(--dyn-pure); line-height: 0.93; margin-bottom: 24px;
+}
+
+/* Compact form fields */
+.dyn-fg { margin-bottom: 10px; }
+.dyn-fl {
+  display: block; font-family: var(--dyn-fc); font-size: 10px; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--dyn-silver); margin-bottom: 5px;
+}
+.dyn-fi, .dyn-fsel {
+  width: 100%; background: var(--dyn-black); border: 1px solid var(--dyn-border);
+  border-radius: var(--dyn-radius); color: var(--dyn-white); font-family: var(--dyn-fb);
+  font-size: 13px; padding: 10px 14px; transition: border-color 0.2s; outline: none;
+  appearance: none; -webkit-appearance: none;
+}
+.dyn-fi:focus, .dyn-fsel:focus { border-color: var(--dyn-silver); }
+.dyn-fi::placeholder { color: var(--dyn-grey); }
+.dyn-fsel option { background: var(--dyn-dark); }
+.dyn-frow { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+/* Accordion section */
+.dyn-facc {
+  border: 1px solid var(--dyn-border); border-radius: var(--dyn-radius);
+  overflow: hidden; margin-bottom: 10px;
+}
+.dyn-facc__head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 11px 14px; cursor: pointer;
+  background: var(--dyn-black); transition: background 0.2s;
+  user-select: none;
+}
+.dyn-facc__head:hover { background: rgba(255,255,255,0.03); }
+.dyn-facc__title {
+  font-family: var(--dyn-fc); font-size: 11px; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--dyn-silver);
+}
+.dyn-facc__value {
+  font-family: var(--dyn-fc); font-size: 11px; letter-spacing: 1px;
+  color: var(--dyn-grey); margin-left: 8px; flex: 1; text-align: right;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 10px;
+}
+.dyn-facc__arrow {
+  width: 16px; height: 16px; color: var(--dyn-grey); flex-shrink: 0;
+  transition: transform 0.3s;
+}
+.dyn-facc.dyn-open .dyn-facc__arrow { transform: rotate(180deg); }
+.dyn-facc__body {
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.35s cubic-bezier(0.16,1,0.3,1);
+  background: var(--dyn-black);
+}
+.dyn-facc.dyn-open .dyn-facc__body { max-height: 300px; }
+.dyn-facc__body-inner { padding: 14px; border-top: 1px solid var(--dyn-border); }
+.dyn-facc__body-inner .dyn-fg { margin-bottom: 10px; }
+.dyn-facc__body-inner .dyn-fg:last-child { margin-bottom: 0; }
+
+/* Plan selector — compact horizontal */
+.dyn-fplans { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-top: 8px; }
+.dyn-fplan-radio { display: none; }
+.dyn-fplan-label {
+  display: block; border: 1px solid var(--dyn-border); border-radius: var(--dyn-radius);
+  padding: 10px 8px; text-align: center; cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+.dyn-fplan-radio:checked + .dyn-fplan-label { border-color: var(--dyn-pure); background: rgba(255,255,255,0.06); }
+.dyn-fplan-name {
+  font-family: var(--dyn-fc); font-size: 11px; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--dyn-pure); display: block;
+}
+.dyn-fplan-price {
+  font-family: var(--dyn-fd); font-size: 22px; color: var(--dyn-pure);
+  display: block; margin-top: 2px; letter-spacing: 1px;
+}
+
+.dyn-fsubmit {
+  width: 100%; padding: 14px; font-family: var(--dyn-fc); font-size: 13px;
+  letter-spacing: 3px; text-transform: uppercase; font-weight: 700;
+  background: var(--dyn-pure); color: var(--dyn-black); border: none;
+  border-radius: var(--dyn-radius); cursor: pointer; margin-top: 10px;
+  transition: opacity 0.2s; flex-shrink: 0;
+}
+.dyn-fsubmit:hover { opacity: 0.85; }
+.dyn-fnote {
+  font-size: 10px; color: var(--dyn-grey); text-align: center;
+  margin-top: 8px; letter-spacing: 0.5px; flex-shrink: 0;
+}
+
+/* Success state */
+.dyn-success { text-align: center; display: none; }
+.dyn-success__icon {
+  width: 56px; height: 56px; border: 1px solid var(--dyn-border); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; margin: 0 auto 24px;
+}
+.dyn-success__title {
+  font-family: var(--dyn-fd); font-size: 52px; letter-spacing: 4px;
+  color: var(--dyn-pure); margin-bottom: 14px; line-height: 1;
+}
+.dyn-success__msg {
+  font-size: 14px; color: var(--dyn-silver); line-height: 1.8;
+  max-width: 380px; margin: 0 auto;
+}
+
+/* ── ANIMATIONS ───────────────────────────────────────── */
+@keyframes dynFadeUp { from { opacity:0; transform:translateY(28px); } to { opacity:1; transform:translateY(0); } }
+@keyframes dynFadeIn { from { opacity:0; } to { opacity:1; } }
+@keyframes dynScrollPulse { 0%,100% { opacity:0.4; transform:scaleY(1); } 50% { opacity:1; transform:scaleY(1.2); } }
+@keyframes dynPulse { 0%,100% { opacity:1; box-shadow:0 0 0 0 rgba(74,222,128,0.4); } 50% { opacity:0.6; box-shadow:0 0 0 6px rgba(74,222,128,0); } }
+@keyframes dynTicker { 0% { transform:translateX(0); } 100% { transform:translateX(-50%); } }
+@keyframes dynMarquee { 0% { transform:translateX(0); } 100% { transform:translateX(-50%); } }
+@keyframes dynSlideCards { 0% { transform:translateX(0); } 100% { transform:translateX(-50%); } }
+
+/* Scroll reveal */
+.dyn-reveal { opacity: 0; transform: translateY(36px); transition: opacity 0.85s cubic-bezier(0.16,1,0.3,1), transform 0.85s cubic-bezier(0.16,1,0.3,1); }
+.dyn-reveal.dyn-visible { opacity: 1; transform: translateY(0); }
+.dyn-rd1 { transition-delay: 0.1s; }
+.dyn-rd2 { transition-delay: 0.2s; }
+.dyn-rd3 { transition-delay: 0.3s; }
+
+/* ── RESPONSIVE ───────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .dyn-nav__links, .dyn-nav__cta { display: none; }
+  .dyn-hamburger { display: flex; }
+  .dyn-nav { padding: 18px 20px; }
+  .dyn-nav.dyn-scrolled { padding: 12px 20px; }
+
+  .dyn-split { grid-template-columns: 1fr; padding: 80px 20px; gap: 48px; }
+  .dyn-split__images { height: 380px; }
+  .dyn-split__desc { max-width: 100%; }
+
+  .dyn-features { padding: 60px 20px; }
+  .dyn-features__grid { grid-template-columns: repeat(2,1fr); }
+
+  .dyn-gallery { padding: 80px 20px; }
+  .dyn-gallery__mosaic { grid-template-columns: 1fr 1fr; grid-template-rows: 220px 200px 200px; }
+  .dyn-gtile:nth-child(1) { grid-row: span 1; grid-column: span 2; }
+  .dyn-gtile:nth-child(4) { grid-column: span 1; }
+
+  .dyn-programs { padding: 80px 20px; }
+  .dyn-programs__grid { grid-template-columns: repeat(2,1fr); }
+
+  .dyn-trainers { padding: 80px 20px; }
+  .dyn-trainers__grid { grid-template-columns: repeat(2,1fr); }
+
+  .dyn-pricing { padding: 80px 20px; }
+  .dyn-plans-grid { grid-template-columns: 1fr; }
+
+  .dyn-stats { padding: 60px 20px; }
+  .dyn-stats__grid { grid-template-columns: repeat(2,1fr); }
+
+  .dyn-testimonials { padding: 80px 20px; }
+  .dyn-t-slide { grid-template-columns: 200px 1fr; gap: 36px; }
+  .dyn-t-slide__photo { width: 200px; height: 260px; }
+
+  .dyn-cta { padding: 80px 20px; }
+  .dyn-footer__main { grid-template-columns: 1fr 1fr; padding: 60px 20px 40px; }
+  .dyn-footer__bottom { padding: 16px 20px; }
+  .dyn-live-bar { padding: 14px 20px; }
+
+  .dyn-signup-page__inner { grid-template-columns: 1fr; }
+  .dyn-signup-page__left { display: none; }
+  .dyn-signup-page__right { padding: 20px 28px; }
+}
+
+@media (max-width: 640px) {
+  .dyn-nav { padding: 16px 16px; }
+  .dyn-nav.dyn-scrolled { padding: 12px 16px; }
+  .dyn-hero__btn { padding: 16px 36px; }
+  .dyn-live-bar { padding: 12px 16px; flex-direction: column; align-items: flex-start; gap: 10px; }
+  .dyn-cap-bar { width: 120px; }
+  .dyn-features__grid { grid-template-columns: 1fr; }
+  .dyn-split { padding: 60px 16px; }
+  .dyn-split__images { height: 280px; }
+  .dyn-split__ph:nth-child(3), .dyn-split__ph:nth-child(4) { display: none; }
+  .dyn-split__ph:nth-child(2) { width: 100%; height: 100%; top: 0; right: 0; }
+  .dyn-split__deco { display: none; }
+  .dyn-gallery { padding: 60px 16px; }
+  .dyn-gallery__mosaic { grid-template-columns: 1fr; grid-template-rows: repeat(5,180px); }
+  .dyn-gtile:nth-child(1), .dyn-gtile:nth-child(4) { grid-column: span 1; grid-row: span 1; }
+  .dyn-programs { padding: 60px 16px; }
+  .dyn-programs__grid { grid-template-columns: 1fr; }
+  .dyn-programs__hr { flex-direction: column; gap: 8px; align-items: flex-start; }
+  .dyn-programs__num { font-size: 64px; }
+  .dyn-trainers { padding: 60px 16px; }
+  .dyn-trainers__grid { grid-template-columns: 1fr; }
+  .dyn-pricing { padding: 60px 16px; }
+  .dyn-stats { padding: 48px 16px; }
+  .dyn-stat__num { font-size: 52px; }
+  .dyn-testimonials { padding: 60px 16px; }
+  .dyn-t-slide { grid-template-columns: 1fr; gap: 28px; }
+  .dyn-t-slide__photo { width: 100%; height: 240px; }
+  .dyn-t-text { font-size: 15px; }
+  .dyn-cta { padding: 60px 16px; }
+  .dyn-footer__main { grid-template-columns: 1fr; padding: 48px 16px 32px; gap: 32px; }
+  .dyn-footer__bottom { padding: 14px 16px; flex-direction: column; align-items: flex-start; }
+  .dyn-footer__brand-name { font-size: 36px; }
+  .dyn-footer__brand-desc { max-width: 100%; }
+  .dyn-signup-page__right { padding: 16px 18px; }
+  .dyn-signup-title { font-size: 36px; }
+  .dyn-frow { grid-template-columns: 1fr; }
+  .dyn-mobile-menu a { font-size: 38px; }
+}
+</style>
+</head>
+<body class="dyn-body">
+
+<!-- NAV -->
+<nav class="dyn-nav" id="dynNav">
+  <a href="#" class="dyn-nav__logo">DYNAMO</a>
+  <ul class="dyn-nav__links">
+    <li><a href="#dyn-about">About</a></li>
+    <li><a href="#dyn-facility">Facility</a></li>
+    <li><a href="#dyn-programs">Programs</a></li>
+    <li><a href="#dyn-trainers">Trainers</a></li>
+    <li><a href="#dyn-pricing">Pricing</a></li>
+  </ul>
+  <a href="#" class="dyn-nav__cta" onclick="dynOpenSignup();return false;">Join Now</a>
+  <button class="dyn-hamburger" id="dynHam" aria-label="Menu" onclick="dynToggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="dyn-mobile-menu" id="dynMobileMenu">
+  <button class="dyn-mm-close" onclick="dynCloseMenu()" aria-label="Close menu">&times;</button>
+  <a href="#dyn-about" onclick="dynCloseMenu()">About</a>
+  <a href="#dyn-facility" onclick="dynCloseMenu()">Facility</a>
+  <a href="#dyn-programs" onclick="dynCloseMenu()">Programs</a>
+  <a href="#dyn-trainers" onclick="dynCloseMenu()">Trainers</a>
+  <a href="#dyn-pricing" onclick="dynCloseMenu()">Pricing</a>
+  <a href="#" class="dyn-mm-cta" onclick="dynCloseMenu();dynOpenSignup();return false;">Join Now</a>
+</div>
+
+<!-- HERO -->
+<section class="dyn-hero">
+  <div class="dyn-hero__bg"></div>
+  <div class="dyn-hero__video">
+    <video autoplay muted loop playsinline>
+      <source src="https://www.pexels.com/download/video/4812848/" type="video/mp4">
+    </video>
+  </div>
+  <div class="dyn-hero__content">
+    <p class="dyn-hero__eyebrow">Premium Training Facility &middot; Est. 2019</p>
+    <h1 class="dyn-hero__title">DYNAMO</h1>
+    <p class="dyn-hero__sub">Where iron meets ambition</p>
+    <a href="#" class="dyn-hero__btn" onclick="dynOpenSignup();return false;">Start Your Journey</a>
+  </div>
+  <div class="dyn-scroll-ind">
+    <span>Scroll</span>
+    <div class="dyn-scroll-line"></div>
+  </div>
+</section>
+
+<!-- LIVE OCCUPANCY -->
+<div class="dyn-live-bar">
+  <div class="dyn-live-bar__item">
+    <div class="dyn-live-dot"></div>
+    <span class="dyn-live-bar__label">Live Occupancy</span>
+    <span class="dyn-live-bar__count" id="dynLiveCount">47</span>
+    <span class="dyn-live-bar__cap">/ 120 members</span>
+  </div>
+  <div class="dyn-live-bar__item" style="flex-direction:column;align-items:flex-start;gap:5px;">
+    <span class="dyn-live-bar__cap">Capacity</span>
+    <div class="dyn-cap-bar"><div class="dyn-cap-fill" id="dynCapFill" style="width:39%"></div></div>
+    <span class="dyn-live-bar__cap" id="dynCapPct">39% &mdash; Quiet time</span>
+  </div>
+  <div class="dyn-live-bar__item">
+    <span class="dyn-live-bar__hours">Today: 05:00 &ndash; 23:00</span>
+  </div>
+  <div class="dyn-live-bar__item">
+    <span class="dyn-live-bar__cap">Peak: 6&ndash;8pm &middot; Best: Before noon</span>
+  </div>
+</div>
+
+<!-- TICKER -->
+<div class="dyn-ticker">
+  <div class="dyn-ticker__inner">
+    <div class="dyn-ticker__item"><span class="dyn-ticker__text">Free Purified Water</span><span class="dyn-ticker__sep"></span></div>
+    <div class="dyn-ticker__item"><span class="dyn-ticker__text">Protein Shop On-Site</span><span class="dyn-ticker__sep"></span></div>
+    <div class="dyn-ticker__item"><span class="dyn-ticker__text">Premium Locker Rooms</span><span class="dyn-ticker__sep"></span></div>
+    <div class="dyn-ticker__item"><span class="dyn-ticker__text">Expert Certified Trainers</span><span class="dyn-ticker__sep"></span></div>
+    <div class="dyn-ticker__item"><span class="dyn-ticker__text">Open 7 Days</span><span class="dyn-ticker__sep"></span></div>
+    <div class="dyn-ticker__item"><span class="dyn-ticker__text">State-of-the-Art Equipment</span><span class="dyn-ticker__sep"></span></div>
+    <div class="dyn-ticker__item"><span class="dyn-ticker__text">Private Training Sessions</span><span class="dyn-ticker__sep"></span></div>
+    <div class="dyn-ticker__item"><span class="dyn-ticker__text">Free Purified Water</span><span class="dyn-ticker__sep"></span></div>
+    <div class="dyn-ticker__item"><span class="dyn-ticker__text">Protein Shop On-Site</span><span class="dyn-ticker__sep"></span></div>
+    <div class="dyn-ticker__item"><span class="dyn-ticker__text">Premium Locker Rooms</span><span class="dyn-ticker__sep"></span></div>
+    <div class="dyn-ticker__item"><span class="dyn-ticker__text">Expert Certified Trainers</span><span class="dyn-ticker__sep"></span></div>
+    <div class="dyn-ticker__item"><span class="dyn-ticker__text">Open 7 Days</span><span class="dyn-ticker__sep"></span></div>
+    <div class="dyn-ticker__item"><span class="dyn-ticker__text">State-of-the-Art Equipment</span><span class="dyn-ticker__sep"></span></div>
+    <div class="dyn-ticker__item"><span class="dyn-ticker__text">Private Training Sessions</span><span class="dyn-ticker__sep"></span></div>
+  </div>
+</div>
+
+<!-- SPLIT SECTION -->
+<section class="dyn-split" id="dyn-about">
+  <div class="dyn-reveal">
+    <div class="dyn-split__tag">The Dynamo Difference</div>
+    <h2 class="dyn-split__heading">BUILT FOR<br>SERIOUS<br>ATHLETES</h2>
+    <p class="dyn-split__desc">We didn't build a gym. We built an obsession. Every machine, every inch of floor, every mirror was chosen with one purpose — to get you to your limit, and then past it. No filler, no fluff. Just work.</p>
+    <a href="#dyn-facility" class="dyn-split__btn">
+      Explore the facility
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+  <div class="dyn-split__images dyn-reveal dyn-rd2">
+    <div class="dyn-split__deco">D</div>
+    <div class="dyn-split__ph">
+      <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=700&q=80" alt="Training floor">
+    </div>
+    <div class="dyn-split__ph">
+      <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&q=80" alt="Free weights">
+    </div>
+    <div class="dyn-split__ph">
+      <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=500&q=80" alt="Cardio zone">
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="dyn-features">
+  <div class="dyn-features__grid">
+    <div class="dyn-feat dyn-reveal">
+      <svg class="dyn-feat__icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 4c0 0-8 8-8 16a8 8 0 0016 0c0-8-8-16-8-16z" stroke-linejoin="round"/><line x1="18" y1="28" x2="18" y2="32" stroke-linecap="round"/><line x1="14" y1="32" x2="22" y2="32" stroke-linecap="round"/></svg>
+      <div class="dyn-feat__title">Free Water</div>
+      <p class="dyn-feat__desc">Unlimited purified alkaline water stations throughout the facility. Stay hydrated, stay sharp.</p>
+    </div>
+    <div class="dyn-feat dyn-reveal dyn-rd1">
+      <svg class="dyn-feat__icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="8" y="6" width="20" height="24" rx="1"/><line x1="12" y1="14" x2="24" y2="14" stroke-linecap="round"/><line x1="12" y1="19" x2="20" y2="19" stroke-linecap="round"/><line x1="12" y1="24" x2="18" y2="24" stroke-linecap="round"/></svg>
+      <div class="dyn-feat__title">Protein Shop</div>
+      <p class="dyn-feat__desc">On-site nutrition bar stocked with supplements, shakes, and clean fuel to power your next set.</p>
+    </div>
+    <div class="dyn-feat dyn-reveal dyn-rd2">
+      <svg class="dyn-feat__icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="18" cy="10" r="4"/><path d="M10 28s1-10 8-10 8 10 8 10" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 16c2-3 4-5 4-5M30 16c-2-3-4-5-4-5" stroke-linecap="round"/></svg>
+      <div class="dyn-feat__title">Premium Showers</div>
+      <p class="dyn-feat__desc">Spa-level bathrooms with premium amenities, hot showers, and towel service included.</p>
+    </div>
+    <div class="dyn-feat dyn-reveal dyn-rd3">
+      <svg class="dyn-feat__icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="6" y="4" width="24" height="20" rx="2"/><path d="M14 24v6M22 24v6M10 30h16" stroke-linecap="round"/><path d="M11 12h4M18 12h7" stroke-linecap="round"/><path d="M11 16h9" stroke-linecap="round"/></svg>
+      <div class="dyn-feat__title">App Access</div>
+      <p class="dyn-feat__desc">Track workouts, book sessions, monitor occupancy, and manage your plan — all from your phone.</p>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="dyn-gallery" id="dyn-facility">
+  <div class="dyn-gallery__header dyn-reveal">
+    <h2 class="dyn-gallery__title">THE<br>FACILITY</h2>
+    <p class="dyn-gallery__sub">Every corner built for performance. See what's waiting for you inside Dynamo.</p>
+  </div>
+  <div class="dyn-gallery__mosaic dyn-reveal">
+    <div class="dyn-gtile"><img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=900&q=80" alt="Main training floor"><div class="dyn-gtile__ov"><span class="dyn-gtile__ov-text">Main Floor &mdash; 800m&sup2;</span></div></div>
+    <div class="dyn-gtile"><img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&q=80" alt="Free weights"><div class="dyn-gtile__ov"><span class="dyn-gtile__ov-text">Free Weights</span></div></div>
+    <div class="dyn-gtile"><img src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=600&q=80" alt="Water station"><div class="dyn-gtile__ov"><span class="dyn-gtile__ov-text">Alkaline Water Bar</span></div></div>
+    <div class="dyn-gtile"><img src="https://images.unsplash.com/photo-1599058917212-d750089bc07e?w=800&q=80" alt="Protein shop"><div class="dyn-gtile__ov"><span class="dyn-gtile__ov-text">Protein &amp; Nutrition Shop</span></div></div>
+    
+  </div>
+  <div class="dyn-gallery__scroll-wrap">
+    <div class="dyn-gallery__scroll-track">
+      <div class="dyn-gallery__scroll-card"><img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=400&q=75" alt="Boxing ring"><span class="dyn-sc-label">Boxing Ring</span></div>
+      <div class="dyn-gallery__scroll-card"><img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&q=75" alt="Stretch"><span class="dyn-sc-label">Stretch Area</span></div>
+      <div class="dyn-gallery__scroll-card"><img src="https://images.unsplash.com/photo-1576678927484-cc907957088c?w=400&q=75" alt="Lockers"><span class="dyn-sc-label">Secure Lockers</span></div>
+      <div class="dyn-gallery__scroll-card"><img src="https://images.unsplash.com/photo-1571731956672-f2b94d7dd0cb?w=400&q=75" alt="Recovery"><span class="dyn-sc-label">Recovery Room</span></div>
+      <div class="dyn-gallery__scroll-card"><img src="https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?w=400&q=75" alt="Lounge"><span class="dyn-sc-label">Members Lounge</span></div>
+      <div class="dyn-gallery__scroll-card"><img src="https://images.unsplash.com/photo-1540497077202-7c8a3999166f?w=400&q=75" alt="Functional"><span class="dyn-sc-label">Functional Zone</span></div>
+      <!-- duplicate for seamless -->
+      <div class="dyn-gallery__scroll-card"><img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=400&q=75" alt="Boxing ring"><span class="dyn-sc-label">Boxing Ring</span></div>
+      <div class="dyn-gallery__scroll-card"><img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&q=75" alt="Stretch"><span class="dyn-sc-label">Stretch Area</span></div>
+      <div class="dyn-gallery__scroll-card"><img src="https://images.unsplash.com/photo-1576678927484-cc907957088c?w=400&q=75" alt="Lockers"><span class="dyn-sc-label">Secure Lockers</span></div>
+      <div class="dyn-gallery__scroll-card"><img src="https://images.unsplash.com/photo-1571731956672-f2b94d7dd0cb?w=400&q=75" alt="Recovery"><span class="dyn-sc-label">Recovery Room</span></div>
+      <div class="dyn-gallery__scroll-card"><img src="https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?w=400&q=75" alt="Lounge"><span class="dyn-sc-label">Members Lounge</span></div>
+      <div class="dyn-gallery__scroll-card"><img src="https://images.unsplash.com/photo-1540497077202-7c8a3999166f?w=400&q=75" alt="Functional"><span class="dyn-sc-label">Functional Zone</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="dyn-stats">
+  <div class="dyn-stats__grid">
+    <div class="dyn-stat dyn-reveal"><div class="dyn-stat__num" data-target="2400">0</div><div class="dyn-stat__label">Active Members</div></div>
+    <div class="dyn-stat dyn-reveal dyn-rd1"><div class="dyn-stat__num" data-target="18">0</div><div class="dyn-stat__label">Expert Trainers</div></div>
+    <div class="dyn-stat dyn-reveal dyn-rd2"><div class="dyn-stat__num" data-target="42">0</div><div class="dyn-stat__label">Weekly Classes</div></div>
+    <div class="dyn-stat dyn-reveal dyn-rd3"><div class="dyn-stat__num" data-target="5">0</div><div class="dyn-stat__label">Years of Excellence</div></div>
+  </div>
+</div>
+
+<!-- PROGRAMS -->
+<section class="dyn-programs" id="dyn-programs">
+  <div class="dyn-programs__inner">
+    <div class="dyn-programs__hr dyn-reveal">
+      <div class="dyn-programs__num">06</div>
+      <h2 class="dyn-programs__heading">SIGNATURE<br>PROGRAMS</h2>
+    </div>
+    <div class="dyn-programs__grid">
+      <div class="dyn-prog-card dyn-reveal" data-num="01"><div class="dyn-prog-card__tag">Strength</div><div class="dyn-prog-card__name">POWER LIFT</div><p class="dyn-prog-card__desc">Structured progressive overload programming. Compound lifts, periodization, and peak strength development.</p><div class="dyn-prog-card__dur">60 min &middot; 4&times; / week</div></div>
+      <div class="dyn-prog-card dyn-reveal dyn-rd1" data-num="02"><div class="dyn-prog-card__tag">Conditioning</div><div class="dyn-prog-card__name">BURN HIIT</div><p class="dyn-prog-card__desc">High-intensity intervals designed to torch body fat while preserving muscle. Maximum output, minimum time.</p><div class="dyn-prog-card__dur">45 min &middot; 5&times; / week</div></div>
+      <div class="dyn-prog-card dyn-reveal dyn-rd2" data-num="03"><div class="dyn-prog-card__tag">Combat</div><div class="dyn-prog-card__name">STRIKE</div><p class="dyn-prog-card__desc">Boxing and kickboxing fundamentals for fitness. Full-body conditioning through the art of striking.</p><div class="dyn-prog-card__dur">60 min &middot; 3&times; / week</div></div>
+      <div class="dyn-prog-card dyn-reveal" data-num="04"><div class="dyn-prog-card__tag">Mobility</div><div class="dyn-prog-card__name">FLOW</div><p class="dyn-prog-card__desc">Yoga-inspired mobility and flexibility training. Improve range of motion, recover faster, move better.</p><div class="dyn-prog-card__dur">60 min &middot; 3&times; / week</div></div>
+      <div class="dyn-prog-card dyn-reveal dyn-rd1" data-num="05"><div class="dyn-prog-card__tag">Functional</div><div class="dyn-prog-card__name">GRIND</div><p class="dyn-prog-card__desc">Athletic functional movement. Sleds, kettlebells, ropes. Real-world strength built for life.</p><div class="dyn-prog-card__dur">50 min &middot; 4&times; / week</div></div>
+      <div class="dyn-prog-card dyn-reveal dyn-rd2" data-num="06"><div class="dyn-prog-card__tag">Elite</div><div class="dyn-prog-card__name">PRIVATE 1:1</div><p class="dyn-prog-card__desc">Fully customised 1-on-1 sessions with a certified trainer. Your body, your goals, your schedule.</p><div class="dyn-prog-card__dur">60&ndash;90 min &middot; Custom</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TRAINERS -->
+<section class="dyn-trainers" id="dyn-trainers">
+  <div class="dyn-trainers__inner">
+    <h2 class="dyn-trainers__title dyn-reveal">MEET THE<br>COACHES</h2>
+    <div class="dyn-trainers__grid">
+      <div class="dyn-trainer-card dyn-reveal">
+        <div class="dyn-trainer-card__photo"><img src="https://images.pexels.com/photos/6456221/pexels-photo-6456221.jpeg" alt="Marcus K."></div>
+        <div class="dyn-trainer-card__info">
+          <div class="dyn-trainer-card__name">MARCUS K.</div>
+          <div class="dyn-trainer-card__role">Head of Strength &amp; Conditioning</div>
+          <div class="dyn-trainer-card__spec"><span class="dyn-spec-tag">Powerlifting</span><span class="dyn-spec-tag">Olympic Lifting</span><span class="dyn-spec-tag">Programming</span></div>
+        </div>
+      </div>
+      <div class="dyn-trainer-card dyn-reveal dyn-rd1">
+        <div class="dyn-trainer-card__photo"><img src="https://images.pexels.com/photos/6551136/pexels-photo-6551136.jpeg" alt="Zara M."></div>
+        <div class="dyn-trainer-card__info">
+          <div class="dyn-trainer-card__name">AMARO M.</div>
+          <div class="dyn-trainer-card__role">Combat &amp; HIIT Specialist</div>
+          <div class="dyn-trainer-card__spec"><span class="dyn-spec-tag">Boxing</span><span class="dyn-spec-tag">Kickboxing</span><span class="dyn-spec-tag">HIIT</span></div>
+        </div>
+      </div>
+      <div class="dyn-trainer-card dyn-reveal dyn-rd2">
+        <div class="dyn-trainer-card__photo"><img src="https://images.pexels.com/photos/4804094/pexels-photo-4804094.jpeg" alt="James T."></div>
+        <div class="dyn-trainer-card__info">
+          <div class="dyn-trainer-card__name">JAMES T.</div>
+          <div class="dyn-trainer-card__role">Mobility & Martial Arts &amp; Recovery Coach</div>
+          <div class="dyn-trainer-card__spec"><span class="dyn-spec-tag">Yoga</span><span class="dyn-spec-tag">Mobility</span><span class="dyn-spec-tag">Rehab</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="dyn-pricing" id="dyn-pricing">
+  <div class="dyn-sec-label dyn-reveal">Membership Plans</div>
+  <h2 class="dyn-reveal">CHOOSE YOUR<br>PATH</h2>
+  <div class="dyn-plans-grid">
+    <div class="dyn-plan dyn-reveal">
+      <div class="dyn-plan__tier">Basic Access</div>
+      <div class="dyn-plan__price">R499</div>
+      <div class="dyn-plan__period">/ month</div>
+      <ul class="dyn-plan-feats">
+        <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l4 4 6-7" stroke="#888" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Gym floor access</li>
+        <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l4 4 6-7" stroke="#888" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Locker use</li>
+        <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l4 4 6-7" stroke="#888" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Free water</li>
+        <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l4 4 6-7" stroke="#888" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>1 group class / week</li>
+      </ul>
+      <a href="#" class="dyn-plan-btn" onclick="dynOpenSignup();return false;">Get Started</a>
+    </div>
+    <div class="dyn-plan dyn-plan--feat dyn-reveal dyn-rd1">
+      <div class="dyn-plan__tier">&#9733; Most Popular</div>
+      <div class="dyn-plan__price">R899</div>
+      <div class="dyn-plan__period">/ month</div>
+      <ul class="dyn-plan-feats">
+        <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l4 4 6-7" stroke="#000" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Full facility access</li>
+        <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l4 4 6-7" stroke="#000" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Unlimited group classes</li>
+        <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l4 4 6-7" stroke="#000" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Protein shop 10% off</li>
+        <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l4 4 6-7" stroke="#000" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>App &amp; live tracking</li>
+        <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l4 4 6-7" stroke="#000" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Monthly InBody scan</li>
+      </ul>
+      <a href="#" class="dyn-plan-btn" onclick="dynOpenSignup();return false;">Join Dynamo</a>
+    </div>
+    <div class="dyn-plan dyn-reveal dyn-rd2">
+      <div class="dyn-plan__tier">Elite</div>
+      <div class="dyn-plan__price">R1599</div>
+      <div class="dyn-plan__period">/ month</div>
+      <ul class="dyn-plan-feats">
+        <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l4 4 6-7" stroke="#888" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Everything in Pro</li>
+        <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l4 4 6-7" stroke="#888" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>2&times; private sessions / mo</li>
+        <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l4 4 6-7" stroke="#888" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Nutrition consultation</li>
+        <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l4 4 6-7" stroke="#888" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Priority booking</li>
+        <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l4 4 6-7" stroke="#888" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Guest pass 2&times; / month</li>
+        <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l4 4 6-7" stroke="#888" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Towel service</li>
+      </ul>
+      <a href="#" class="dyn-plan-btn" onclick="dynOpenSignup();return false;">Go Elite</a>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="dyn-testimonials">
+  <div class="dyn-testimonials__inner">
+    <h2 class="dyn-testimonials__title dyn-reveal">REAL<br>RESULTS</h2>
+    <div class="dyn-t-slider dyn-reveal">
+      <div class="dyn-t-slide dyn-active">
+        <div class="dyn-t-slide__photo"><img src="https://images.pexels.com/photos/2691608/pexels-photo-2691608.jpeg" alt="Thabo N."></div>
+        <div>
+          <span class="dyn-t-qmark">&ldquo;</span>
+          <p class="dyn-t-text">I've been to gyms across three cities. Dynamo is the first place that actually feels like it was built for serious training. The atmosphere alone makes you want to push harder.</p>
+          <div class="dyn-t-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <div class="dyn-t-author">Thabo N.</div>
+          <div class="dyn-t-role">Member since 2021 &middot; Powerlifter</div>
+        </div>
+      </div>
+      <div class="dyn-t-slide">
+        <div class="dyn-t-slide__photo"><img src="https://images.pexels.com/photos/718978/pexels-photo-718978.jpeg" alt="Ayesha P."></div>
+        <div>
+          <span class="dyn-t-qmark">&ldquo;</span>
+          <p class="dyn-t-text">The trainers here are on another level. Marcus redesigned my entire program and I hit a new PB within 6 weeks. Worth every rand. Best investment I've made in myself.</p>
+          <div class="dyn-t-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <div class="dyn-t-author">Ayesha P.</div>
+          <div class="dyn-t-role">Member since 2022 &middot; Elite Plan</div>
+        </div>
+      </div>
+      <div class="dyn-t-slide">
+        <div class="dyn-t-slide__photo"><img src="https://images.pexels.com/photos/28657883/pexels-photo-28657883.jpeg" alt="Liam S."></div>
+        <div>
+          <span class="dyn-t-qmark">&ldquo;</span>
+          <p class="dyn-t-text">The live occupancy tracker is genius. I plan my sessions around quiet hours. Clean, premium, no crowds. This is how a gym should feel. Never going anywhere else.</p>
+          <div class="dyn-t-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <div class="dyn-t-author">Liam S.</div>
+          <div class="dyn-t-role">Member since 2023 &middot; Pro Plan</div>
+        </div>
+      </div>
+      <div class="dyn-t-slide">
+        <div class="dyn-t-slide__photo"><img src="https://images.pexels.com/photos/7297719/pexels-photo-7297719.jpeg" alt="Nomsa D."></div>
+        <div>
+          <span class="dyn-t-qmark">&ldquo;</span>
+          <p class="dyn-t-text">I was intimidated at first, but this place is incredibly welcoming. FLOW classes with James changed my life. Down 14kg in 5 months and I feel absolutely incredible.</p>
+          <div class="dyn-t-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <div class="dyn-t-author">Nomsa D.</div>
+          <div class="dyn-t-role">Member since 2024 &middot; Basic Plan</div>
+        </div>
+      </div>
+    </div>
+    <div class="dyn-t-nav">
+      <button class="dyn-t-btn" onclick="dynTPrev()" aria-label="Previous"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button class="dyn-t-btn" onclick="dynTNext()" aria-label="Next"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="dyn-t-dots" id="dynTDots">
+        <div class="dyn-t-dot dyn-active" onclick="dynTGo(0)"></div>
+        <div class="dyn-t-dot" onclick="dynTGo(1)"></div>
+        <div class="dyn-t-dot" onclick="dynTGo(2)"></div>
+        <div class="dyn-t-dot" onclick="dynTGo(3)"></div>
+      </div>
+      <span class="dyn-t-count" id="dynTCount">01 / 04</span>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<section class="dyn-cta">
+  <p class="dyn-cta__eyebrow dyn-reveal">No Excuses</p>
+  <h2 class="dyn-cta__title dyn-reveal">YOUR<br>TIME IS NOW</h2>
+  <a href="#" class="dyn-cta__btn dyn-reveal" onclick="dynOpenSignup();return false;">Become a Member</a>
+</section>
+
+<!-- FOOTER -->
+<footer class="dyn-footer">
+  <div class="dyn-footer__main">
+    <div>
+      <div class="dyn-footer__brand-name">DYNAMO</div>
+      <p class="dyn-footer__brand-desc">Durban's premier training facility. Built for those who refuse average. Open 365 days a year.</p>
+      <div class="dyn-footer__socials">
+        <a href="#" class="dyn-social-link" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+        <a href="#" class="dyn-social-link" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+        <a href="#" class="dyn-social-link" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" stroke="none" fill="currentColor"/></svg></a>
+        <a href="#" class="dyn-social-link" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.19 8.19 0 004.79 1.53V6.78a4.85 4.85 0 01-1.02-.09z"/></svg></a>
+      </div>
+    </div>
+    <div>
+      <div class="dyn-footer__col-title">Navigate</div>
+      <ul class="dyn-footer__col-links">
+        <li><a href="#dyn-about">About</a></li>
+        <li><a href="#dyn-facility">Facility</a></li>
+        <li><a href="#dyn-programs">Programs</a></li>
+        <li><a href="#dyn-trainers">Trainers</a></li>
+        <li><a href="#dyn-pricing">Pricing</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="dyn-footer__col-title">Location</div>
+      <ul class="dyn-footer__col-links">
+        <li><a href="#">123 Smith Street</a></li>
+        <li><a href="#">Durban Central</a></li>
+        <li><a href="#">KwaZulu-Natal</a></li>
+        <li><a href="#"><span class="__cf_email__" data-cfemail="fc9499909093bc9885929d9193d29f93d2869d">[email&#160;protected]</span></a></li>
+        <li><a href="#">031 000 0000</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="dyn-footer__col-title">Hours</div>
+      <div class="dyn-footer__hours">
+        <div class="dyn-footer__hour-row"><span>Mon &ndash; Fri</span><span>05:00 &ndash; 23:00</span></div>
+        <div class="dyn-footer__hour-row"><span>Saturday</span><span>06:00 &ndash; 22:00</span></div>
+        <div class="dyn-footer__hour-row"><span>Sunday</span><span>07:00 &ndash; 20:00</span></div>
+        <div class="dyn-footer__hour-row"><span>Public Holidays</span><span>07:00 &ndash; 18:00</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="dyn-footer__bottom">
+    <span class="dyn-footer__copy">&copy; 2025 Dynamo Gym. All rights reserved.</span>
+    <span class="dyn-footer__copy">Privacy &middot; Terms &middot; Sitemap</span>
+  </div>
+  <div class="dyn-footer__marquee">
+    <div class="dyn-footer__marquee-inner">
+      <span class="dyn-footer__marquee-text">DYNAMO &nbsp;&middot;&nbsp;&nbsp;</span>
+      <span class="dyn-footer__marquee-text">DYNAMO &nbsp;&middot;&nbsp;&nbsp;</span>
+      <span class="dyn-footer__marquee-text">DYNAMO &nbsp;&middot;&nbsp;&nbsp;</span>
+      <span class="dyn-footer__marquee-text">DYNAMO &nbsp;&middot;&nbsp;&nbsp;</span>
+      <span class="dyn-footer__marquee-text">DYNAMO &nbsp;&middot;&nbsp;&nbsp;</span>
+      <span class="dyn-footer__marquee-text">DYNAMO &nbsp;&middot;&nbsp;&nbsp;</span>
+      <span class="dyn-footer__marquee-text">DYNAMO &nbsp;&middot;&nbsp;&nbsp;</span>
+      <span class="dyn-footer__marquee-text">DYNAMO &nbsp;&middot;&nbsp;&nbsp;</span>
+    </div>
+  </div>
+</footer>
+
+<!-- SIGN UP FULL PAGE -->
+<div class="dyn-signup-page" id="dynSignupPage">
+  <button class="dyn-signup-close" onclick="dynCloseSignup()" aria-label="Close">&times;</button>
+  <div class="dyn-signup-page__inner">
+    <div class="dyn-signup-page__left">
+      <div class="dyn-signup-page__left-content">
+        <div class="dyn-signup-page__logo">DYNAMO</div>
+        <div>
+          <div class="dyn-signup-page__tagline">FORGE<br>YOUR BEST<br>SELF</div>
+          <p class="dyn-signup-page__sub">Durban's most premium training facility. Open 365 days.</p>
+        </div>
+      </div>
+    </div>
+    <div class="dyn-signup-page__right">
+      <div id="dynSignupFormWrap">
+        <p class="dyn-signup-eyebrow">Start your journey</p>
+        <h2 class="dyn-signup-title">JOIN<br>DYNAMO</h2>
+
+        <!-- Row 1: Name -->
+        <div class="dyn-frow">
+          <div class="dyn-fg">
+            <label class="dyn-fl">First Name</label>
+            <input type="text" class="dyn-fi" placeholder="First name" id="dynFName">
+          </div>
+          <div class="dyn-fg">
+            <label class="dyn-fl">Last Name</label>
+            <input type="text" class="dyn-fi" placeholder="Last name" id="dynLName">
+          </div>
+        </div>
+
+        <!-- Row 2: Email + Phone -->
+        <div class="dyn-frow">
+          <div class="dyn-fg">
+            <label class="dyn-fl">Email</label>
+            <input type="email" class="dyn-fi" placeholder="you@example.com" id="dynEmail">
+          </div>
+          <div class="dyn-fg">
+            <label class="dyn-fl">Phone</label>
+            <input type="tel" class="dyn-fi" placeholder="+27 00 000 0000" id="dynPhone">
+          </div>
+        </div>
+
+        <!-- Accordion: Personal details (DOB + Goal) -->
+        <div class="dyn-facc" id="dynAccPersonal">
+          <div class="dyn-facc__head" onclick="dynToggleAcc('dynAccPersonal')">
+            <span class="dyn-facc__title">Personal Details</span>
+            <span class="dyn-facc__value" id="dynAccPersonalVal">Date of birth &amp; goal</span>
+            <svg class="dyn-facc__arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 6l4 4 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="dyn-facc__body">
+            <div class="dyn-facc__body-inner">
+              <div class="dyn-frow">
+                <div class="dyn-fg">
+                  <label class="dyn-fl">Date of Birth</label>
+                  <input type="date" class="dyn-fi" id="dynDOB" onchange="dynUpdateAccVal()">
+                </div>
+                <div class="dyn-fg">
+                  <label class="dyn-fl">Primary Goal</label>
+                  <select class="dyn-fsel" id="dynGoal" onchange="dynUpdateAccVal()">
+                    <option value="" disabled selected>Select goal...</option>
+                    <option>Build Muscle</option>
+                    <option>Lose Weight</option>
+                    <option>Improve Fitness</option>
+                    <option>Athletic Performance</option>
+                    <option>General Wellness</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Accordion: Choose plan -->
+        <div class="dyn-facc dyn-open" id="dynAccPlan">
+          <div class="dyn-facc__head" onclick="dynToggleAcc('dynAccPlan')">
+            <span class="dyn-facc__title">Membership Plan</span>
+            <span class="dyn-facc__value" id="dynAccPlanVal">Pro &mdash; R899 / month</span>
+            <svg class="dyn-facc__arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 6l4 4 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="dyn-facc__body">
+            <div class="dyn-facc__body-inner">
+              <div class="dyn-fplans">
+                <div>
+                  <input type="radio" name="dyn-plan" id="dynPlanB" class="dyn-fplan-radio" value="basic" onchange="dynUpdatePlanVal()">
+                  <label for="dynPlanB" class="dyn-fplan-label">
+                    <span class="dyn-fplan-name">Basic</span>
+                    <span class="dyn-fplan-price">R499</span>
+                  </label>
+                </div>
+                <div>
+                  <input type="radio" name="dyn-plan" id="dynPlanP" class="dyn-fplan-radio" value="pro" checked onchange="dynUpdatePlanVal()">
+                  <label for="dynPlanP" class="dyn-fplan-label">
+                    <span class="dyn-fplan-name">Pro</span>
+                    <span class="dyn-fplan-price">R899</span>
+                  </label>
+                </div>
+                <div>
+                  <input type="radio" name="dyn-plan" id="dynPlanE" class="dyn-fplan-radio" value="elite" onchange="dynUpdatePlanVal()">
+                  <label for="dynPlanE" class="dyn-fplan-label">
+                    <span class="dyn-fplan-name">Elite</span>
+                    <span class="dyn-fplan-price">R1599</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button class="dyn-fsubmit" onclick="dynSubmitSignup()">Complete Registration &rarr;</button>
+        <p class="dyn-fnote">No lock-in contracts. Cancel anytime. Your data is protected.</p>
+      </div>
+
+      <div class="dyn-success" id="dynSignupSuccess">
+        <div class="dyn-success__icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="dyn-success__title">WELCOME<br>TO DYNAMO</div>
+        <p class="dyn-success__msg">Your registration is confirmed. Our team will contact you within 24 hours to arrange your access card and orientation session.<br><br>Time to get to work.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// Nav scroll
+window.addEventListener('scroll', () => {
+  document.getElementById('dynNav').classList.toggle('dyn-scrolled', window.scrollY > 60);
+});
+
+// Mobile menu
+let _dynMenuOpen = false;
+function dynToggleMenu() {
+  _dynMenuOpen = !_dynMenuOpen;
+  document.getElementById('dynMobileMenu').classList.toggle('dyn-open', _dynMenuOpen);
+  document.getElementById('dynHam').classList.toggle('dyn-open', _dynMenuOpen);
+  document.body.style.overflow = _dynMenuOpen ? 'hidden' : '';
+}
+function dynCloseMenu() {
+  _dynMenuOpen = false;
+  document.getElementById('dynMobileMenu').classList.remove('dyn-open');
+  document.getElementById('dynHam').classList.remove('dyn-open');
+  document.body.style.overflow = '';
+}
+
+// Live occupancy
+let _dynCount = 47;
+function dynUpdateOcc() {
+  _dynCount = Math.max(6, Math.min(120, _dynCount + Math.floor(Math.random() * 7) - 3));
+  const pct = Math.round((_dynCount / 120) * 100);
+  document.getElementById('dynLiveCount').textContent = _dynCount;
+  document.getElementById('dynCapFill').style.width = pct + '%';
+  let s = 'Quiet time', c = 'linear-gradient(to right,#4ade80,#86efac)';
+  if (pct > 80) { s = 'Very busy'; c = 'linear-gradient(to right,#f87171,#fca5a5)'; }
+  else if (pct > 60) { s = 'Getting busy'; c = 'linear-gradient(to right,#fb923c,#fdba74)'; }
+  else if (pct > 40) { s = 'Moderate'; c = 'linear-gradient(to right,#facc15,#fde68a)'; }
+  document.getElementById('dynCapPct').textContent = pct + '% \u2014 ' + s;
+  document.getElementById('dynCapFill').style.background = c;
+}
+setInterval(dynUpdateOcc, 4000);
+
+// Scroll reveal
+const _dynObs = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('dyn-visible'); }), { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.dyn-reveal').forEach(el => _dynObs.observe(el));
+
+// Counter animation
+function dynAnimCount(el, t) {
+  const s = Date.now(), d = 1800;
+  (function tick() {
+    const p = Math.min((Date.now() - s) / d, 1), e = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(e * t).toLocaleString();
+    if (p < 1) requestAnimationFrame(tick);
+  })();
+}
+const _dynCObs = new IntersectionObserver(es => {
+  es.forEach(e => { if (e.isIntersecting) { dynAnimCount(e.target, parseInt(e.target.dataset.target)); _dynCObs.unobserve(e.target); } });
+}, { threshold: 0.5 });
+document.querySelectorAll('[data-target]').forEach(el => _dynCObs.observe(el));
+
+// Testimonials slider
+let _dynTIdx = 0;
+const _dynSlides = document.querySelectorAll('.dyn-t-slide');
+const _dynDots = document.querySelectorAll('.dyn-t-dot');
+function dynTGo(i) {
+  _dynSlides[_dynTIdx].classList.remove('dyn-active');
+  _dynDots[_dynTIdx].classList.remove('dyn-active');
+  _dynTIdx = (i + _dynSlides.length) % _dynSlides.length;
+  _dynSlides[_dynTIdx].classList.add('dyn-active');
+  _dynDots[_dynTIdx].classList.add('dyn-active');
+  document.getElementById('dynTCount').textContent = String(_dynTIdx + 1).padStart(2,'0') + ' / ' + String(_dynSlides.length).padStart(2,'0');
+}
+function dynTNext() { dynTGo(_dynTIdx + 1); }
+function dynTPrev() { dynTGo(_dynTIdx - 1); }
+setInterval(dynTNext, 6500);
+
+// Signup page
+function dynOpenSignup() { document.getElementById('dynSignupPage').classList.add('dyn-active'); document.body.style.overflow = 'hidden'; }
+function dynCloseSignup() {
+  document.getElementById('dynSignupPage').classList.remove('dyn-active');
+  document.body.style.overflow = '';
+  setTimeout(() => {
+    document.getElementById('dynSignupFormWrap').style.display = 'block';
+    document.getElementById('dynSignupSuccess').style.display = 'none';
+  }, 300);
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') dynCloseSignup(); });
+function dynSubmitSignup() {
+  const n = document.getElementById('dynFName').value.trim();
+  const em = document.getElementById('dynEmail').value.trim();
+  if (!n || !em) { alert('Please enter your name and email.'); return; }
+  document.getElementById('dynSignupFormWrap').style.display = 'none';
+  document.getElementById('dynSignupSuccess').style.display = 'block';
+}
+
+// Accordion toggle
+function dynToggleAcc(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('dyn-open');
+}
+
+// Update accordion summary values
+const _dynPlanNames = { basic: 'Basic \u2014 R499 / month', pro: 'Pro \u2014 R899 / month', elite: 'Elite \u2014 R1599 / month' };
+function dynUpdatePlanVal() {
+  const sel = document.querySelector('input[name="dyn-plan"]:checked');
+  if (sel) document.getElementById('dynAccPlanVal').textContent = _dynPlanNames[sel.value] || '';
+}
+function dynUpdateAccVal() {
+  const dob = document.getElementById('dynDOB').value;
+  const goal = document.getElementById('dynGoal').value;
+  const parts = [];
+  if (dob) parts.push(dob);
+  if (goal) parts.push(goal);
+  document.getElementById('dynAccPersonalVal').textContent = parts.length ? parts.join(' \u00b7 ') : 'Date of birth & goal';
+}
+
+// Smooth anchors
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const id = a.getAttribute('href');
+    if (id.length > 1) {
+      e.preventDefault();
+      const target = document.querySelector(id);
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+});
+
+</script>
+</body>
+</html>
+
+
+<script>
+// run a few helpers once so the page isn’t “stale” until the first timer/event
+dynUpdateOcc();        // apply the initial occupancy values
+dynUpdatePlanVal();    // make sure the plan accordion summary is accurate
+dynUpdateAccVal();     // …and the personal‑details summary too
+
+// convenience – let Esc dismiss whichever overlay is visible
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+        if (_dynMenuOpen) dynCloseMenu();
+        else dynCloseSignup();
+    }
+});
+
+// if the mobile menu is open and the user clicks anywhere outside of it,
+// close it (hamburger button excluded)
+document.addEventListener('click', e => {
+    if (_dynMenuOpen) {
+        const menu = document.getElementById('dynMobileMenu');
+        const ham = document.getElementById('dynHam');
+        if (!menu.contains(e.target) && !ham.contains(e.target)) {
+            dynCloseMenu();
+        }
+    }
+});
+</script>
+
+
+
+
+
+
+
+
+
+
